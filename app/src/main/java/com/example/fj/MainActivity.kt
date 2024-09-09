@@ -2,6 +2,7 @@ package com.example.fj
 
 import android.graphics.Picture
 import android.os.Bundle
+import android.text.style.LineHeightSpan
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -186,9 +187,9 @@ fun Content1(){
             contentScale = ContentScale.Crop
         )
         Text(
-            stringResource(R.string.Text_Card),
-            TextAlign=TextAlign.Justify,
-            LineHight =18.sp,
+            text = stringResource(R.string.Text_Card),
+            textAlign = TextAlign.Justify,
+            lineHeight = 18.sp,
             modifier = Modifier
                 .padding(10.dp)
         )
@@ -219,9 +220,9 @@ fun Content2() {
             contentScale = ContentScale.Crop
         )
         Text(
-            stringResource(R.string.Text_Card),
-            TextAlign=TextAlign.Justify,
-            LineHight =18.sp,
+            text = stringResource(R.string.Text_Card),
+            textAlign = TextAlign.Justify,
+            lineHeight = 18.sp,
             modifier = Modifier
                 .padding(10.dp)
         )
