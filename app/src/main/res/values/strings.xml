@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FJ</string>
+    <string name="hello_word_text">hello world!</string>
+    <string name="Text_Card">Lorem ipsum es el texto que se usa habitualmente en diseño gráfico en demostraciones de tipografías o de borradores de diseño para probar el diseño visual antes de insertar el texto final.</string>
 </resources>
