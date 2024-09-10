@@ -19,8 +19,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -165,6 +169,24 @@ fun CustomText() {
 
 @Preview(showBackground = true)
 @Composable
+fun Picture(){
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Black)
+    ){
+        Image(
+            modifier= Modifier
+                .fillMaxWidth(),
+            painter = painterResource(R.drawable.descargar),
+            contentDescription ="Logo Android",
+            contentScale = ContentScale.Crop
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
 fun Content1(){
     Card(
         modifier = Modifier
@@ -204,30 +226,87 @@ fun Content2() {
             .background(Color.LightGray)
             .fillMaxWidth()
             .padding(5.dp)
-    ){
-        Text(text="this is title",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(10.dp)
-        )
-        Image(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            painter = painterResource(id =R.drawable.descargar),
-            contentDescription ="Android Logo",
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = stringResource(R.string.Text_Card),
-            textAlign = TextAlign.Justify,
-            lineHeight = 18.sp,
-            modifier = Modifier
-                .padding(10.dp)
-        )
+    ) {
+        Row {
+            Column(
+                modifier = Modifier
+                    .padding(2.dp)
+            ) {
+                Text(
+                    text = "This is title",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(10.dp)
+                )
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    painter = painterResource(id = R.drawable.descargar),
+                    contentDescription = "Android Logo",
+                    contentScale = ContentScale.Crop
+                )
+                Text(
+                    text = stringResource(R.string.Text_Card),
+                    textAlign = TextAlign.Justify,
+                    lineHeight = 18.sp,
+                    modifier = Modifier
+                        .padding(10.dp)
+                )
+            }
+        }
     }
 }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun BoxExample1() {
+        Card(
+            modifier = Modifier
+                .background(Color.DarkGray)
+                .fillMaxWidth()
+                .padding(5.dp)
+        ) {
+            Image(
+                painterResource(R.drawable.descargar),
+                contentDescription = "Android Logo",
+                contentScale = ContentScale.FillBounds
+            )
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, 150.dp),
+                horizontalArrangement = Arrangement.Center
+            ){
+                Icon(
+                    Icons.Filled.AccountCircle,
+                    contentDescription = "Icon Account"
+                )
+            Text(text = "text")
+            }
+        }
+    }
+
+@Preview(showBackground = true)
+@Composable
+fun BoxExample2() {
+    Box(
+        modifier = Modifier
+            .background(Color.Magenta)
+            .padding(5.dp)
+            .size(290.dp)
+    ) {
+        Text(text = "TopStart", Modifier.align(Alignment.TopStart))
+        Text(text = "TopEnd", Modifier.align(Alignment.TopEnd))
+        Text(text = "CenterStart", Modifier.align(Alignment.CenterStart))
+        Text(text = "Center", Modifier.align(Alignment.Center))
+        Text(text = "CenterEnd", Modifier.align(Alignment.CenterEnd))
+        Text(text = "BottomStart", Modifier.align(Alignment.BottomStart))
+        Text(text = "BottomEnd", Modifier.align(Alignment.BottomEnd))
+    }
+
+    }
 
 fun clickAction(){
     println("Column Clicked")
