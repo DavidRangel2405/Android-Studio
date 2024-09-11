@@ -2,7 +2,6 @@ package com.example.fj
 
 import android.graphics.Picture
 import android.os.Bundle
-import android.text.style.LineHeightSpan
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,10 +21,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -154,14 +153,14 @@ fun ModifierExample3() {
 fun CustomText() {
     Column {
         Text(
-            stringResource(R.string.hello_word_text),
+            stringResource(R.string.hello_world_text),
             color = colorResource(R.color.purple_500),
             fontSize = 28.sp,
             fontWeight = FontWeight.ExtraBold
         )
         val gradientColors = listOf(Color.Cyan, Color.Blue, Color.Red)
         Text(
-            stringResource(R.string.hello_word_text),
+            stringResource(R.string.hello_world_text),
             style = TextStyle(brush = Brush.linearGradient(colors =gradientColors))
         )
     }
@@ -194,7 +193,7 @@ fun Content1(){
             .fillMaxWidth()
             .padding(5.dp)
     ){
-        Text(text="this is title",
+        Text (text = "This is a Title",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -202,19 +201,19 @@ fun Content1(){
         )
         Image(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            painter = painterResource(id =R.drawable.descargar),
-            contentDescription ="Android Logo",
+                .fillMaxWidth(),
+            painter = painterResource(id = R.drawable.descargar),
+            contentDescription = "Android Logo",
             contentScale = ContentScale.Crop
         )
         Text(
-            text = stringResource(R.string.Text_Card),
+            stringResource(R.string.Text_Card),
             textAlign = TextAlign.Justify,
             lineHeight = 18.sp,
             modifier = Modifier
                 .padding(10.dp)
         )
+
     }
 }
 
@@ -226,31 +225,29 @@ fun Content2() {
             .background(Color.LightGray)
             .fillMaxWidth()
             .padding(5.dp)
-    ) {
+    ){
         Row {
-            Column(
+            Image(
                 modifier = Modifier
-                    .padding(2.dp)
-            ) {
-                Text(
-                    text = "This is title",
+                    .width(150.dp)
+                    .height(150.dp),
+                //.fillMaxWidth()
+                painter = painterResource(id = R.drawable.descargar),
+                contentDescription = "Android Logo",
+                contentScale = ContentScale.Crop
+            )
+            Column {
+                Text (text = "This is a Title",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(10.dp)
                 )
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    painter = painterResource(id = R.drawable.descargar),
-                    contentDescription = "Android Logo",
-                    contentScale = ContentScale.Crop
-                )
                 Text(
-                    text = stringResource(R.string.Text_Card),
+                    stringResource(R.string.Text_Card),
                     textAlign = TextAlign.Justify,
                     lineHeight = 18.sp,
+                    maxLines = 4,
                     modifier = Modifier
                         .padding(10.dp)
                 )
@@ -262,28 +259,28 @@ fun Content2() {
     @Preview(showBackground = true)
     @Composable
     fun BoxExample1() {
-        Card(
+        Box(
             modifier = Modifier
                 .background(Color.DarkGray)
                 .fillMaxWidth()
                 .padding(5.dp)
-        ) {
-            Image(
-                painterResource(R.drawable.descargar),
+        ){
+            Image(painterResource(R.drawable.descargar),
                 contentDescription = "Android Logo",
                 contentScale = ContentScale.FillBounds
             )
-            Row (
+            Row(
                 modifier = Modifier
+                    .background(Color.Red)
                     .fillMaxWidth()
-                    .padding(0.dp, 150.dp),
+                    .padding(0.dp, 0.dp),
                 horizontalArrangement = Arrangement.Center
             ){
                 Icon(
                     Icons.Filled.AccountCircle,
                     contentDescription = "Icon Account"
                 )
-            Text(text = "text")
+                Text(text = "Text")
             }
         }
     }
