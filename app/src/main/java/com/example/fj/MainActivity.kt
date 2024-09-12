@@ -302,10 +302,8 @@ fun BoxExample2() {
         Text(text = "BottomStart", Modifier.align(Alignment.BottomStart))
         Text(text = "BottomEnd", Modifier.align(Alignment.BottomEnd))
     }
-
     }
 
 fun clickAction(){
     println("Column Clicked")
-
 }
