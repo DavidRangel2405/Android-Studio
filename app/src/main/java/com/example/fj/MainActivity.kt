@@ -333,6 +333,5 @@ fun SetupNavGraph(navController: NavHostController){
     NavHost(navController = navController,startDestination = "menu"){
         composable("menu"){ MenuScreen(navController)}
         composable("home"){ HomeScreen(navController)}
-
     }
 }
