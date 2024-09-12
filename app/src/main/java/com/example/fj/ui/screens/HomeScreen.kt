@@ -18,7 +18,7 @@ fun HomeScreen(navController: NavController){
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text(text = "This is the HomeScreen")
+        Text(text = "This is the Home Screen")
         Button(onClick = {navController.navigate("menu")}) {
             Text("Go to Home")
 
