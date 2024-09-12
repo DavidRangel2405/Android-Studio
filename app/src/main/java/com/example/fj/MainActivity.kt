@@ -2,7 +2,6 @@ package com.example.fj
 
 import android.graphics.Picture
 import android.os.Bundle
-import android.text.style.LineHeightSpan
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,12 +21,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -282,6 +284,7 @@ fun Content2() {
             )
             Row(
                 modifier = Modifier
+
                     .fillMaxWidth()
                     .padding(0.dp, 0.dp),
                 horizontalArrangement = Arrangement.Center
@@ -312,11 +315,11 @@ fun BoxExample2() {
         Text(text = "BottomStart", Modifier.align(Alignment.BottomStart))
         Text(text = "BottomEnd", Modifier.align(Alignment.BottomEnd))
     }
-
     }
 
 fun clickAction(){
     println("Column Clicked")
+
 
 }*/
 @Preview(showBackground = true)
