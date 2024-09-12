@@ -282,7 +282,6 @@ fun Content2() {
             )
             Row(
                 modifier = Modifier
-                    .background(Color.Red)
                     .fillMaxWidth()
                     .padding(0.dp, 0.dp),
                 horizontalArrangement = Arrangement.Center
