@@ -20,7 +20,7 @@ fun HomeScreen(navController: NavController){
     ){
         Text(text = "This is the Home Screen")
         Button(onClick = {navController.navigate("menu")}) {
-            Text("Go to Home")
+            Text("Go to Menu")
 
         }
     }

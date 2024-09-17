@@ -59,7 +59,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ComposeMultiScreenApp()
-           /* Column(
+            /*
+            Column(
                 modifier=Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
@@ -68,11 +69,14 @@ class MainActivity : ComponentActivity() {
                 Picture()
                 Content1()
                 Content2()
-                // Text(text ="Simple text")
-                // ModifierExample()
-                //ModifierExample2()
-                //  ModifierExample3()
-            } */
+                 //Text(text ="Simple text")
+                 ModifierExample()
+                ModifierExample2()
+                  ModifierExample3()
+                BoxExample1()
+                BoxExample2()
+
+            }
             //Layouts
             /*Column {
                  Text(text = "First Row")
@@ -93,10 +97,11 @@ class MainActivity : ComponentActivity() {
                  Greeting(name ="World")
 
              }*/
+            */
         }
     }
 }
-/*
+
 private fun column(function: () -> Unit) {
 
 }
@@ -319,7 +324,7 @@ fun clickAction(){
     println("Column Clicked")
 
 
-}*/
+}
 @Preview(showBackground = true)
 @Composable
 fun ComposeMultiScreenApp(){
