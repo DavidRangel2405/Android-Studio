@@ -351,7 +351,6 @@ fun BoxExample2() {
 fun clickAction(){
     println("Column Clicked")
 
-
 }
 */@Preview(showBackground = true)
 @Composable

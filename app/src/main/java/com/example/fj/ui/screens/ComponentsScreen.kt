@@ -86,5 +86,5 @@ fun Content1(){
 
 @Composable
 fun Content2(){
-    Text(text= "Content 1")
+    Text(text= "Content 2")
 }
