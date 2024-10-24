@@ -352,7 +352,8 @@ fun clickAction(){
     println("Column Clicked")
 
 }
-*/@Preview(showBackground = true)
+*/
+@Preview(showBackground = true)
 @Composable
 fun ComposeMultiScreenApp(){
     val navController = rememberNavController()
