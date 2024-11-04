@@ -70,7 +70,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fj.ui.screens.ComponentsScreen
+import com.example.fj.ui.screens.LocalizacionScreen
 import com.example.fj.ui.screens.LoginScreen
 import com.example.fj.ui.theme.ColdGray
 import com.example.fj.ui.theme.DarkBlueGray
@@ -106,5 +108,6 @@ fun SetupNavGraph(navController: NavHostController){
         composable("home"){ HomeScreen(navController)}
         composable("components"){ ComponentsScreen(navController) }
         composable("login"){ LoginScreen(navController)}
+        composable("localizacion") { LocalizacionScreen(viewModel()) }
     }
 }
