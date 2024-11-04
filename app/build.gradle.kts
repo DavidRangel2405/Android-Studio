@@ -64,6 +64,14 @@ dependencies {
     implementation(libs.androidx.adaptive.android)
     implementation(libs.coil.compose)
     //implementation(libs.androidx.navigation.runtime.ktx)
+    //Mapas
+    implementation("com.google.maps.android:maps-compose:2.14.0")
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+    //Places
+    implementation("com.google.android.libraries.places:places:4.0.0")
+    //Navigation
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
