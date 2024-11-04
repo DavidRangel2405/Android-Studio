@@ -72,6 +72,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fj.ui.screens.ComponentsScreen
+import com.example.fj.ui.screens.ContactCalendarScreen
 import com.example.fj.ui.screens.LocalizacionScreen
 import com.example.fj.ui.screens.LoginScreen
 import com.example.fj.ui.theme.ColdGray
@@ -109,5 +110,6 @@ fun SetupNavGraph(navController: NavHostController){
         composable("components"){ ComponentsScreen(navController) }
         composable("login"){ LoginScreen(navController)}
         composable("localizacion") { LocalizacionScreen(viewModel()) }
+        composable("contactcalendar") { ContactCalendarScreen() }
     }
 }
