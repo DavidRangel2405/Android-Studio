@@ -28,6 +28,9 @@ fun MenuScreen(navController: NavController){
         Button(onClick = {navController.navigate("login")}) {
             Text("Go to Login")
         }
+        Button(onClick = {navController.navigate("segundoplano")}) {
+            Text("Go to Alarma")
+        }
         Button(onClick = {navController.navigate("localizacion")}) {
             Text("Go to Localizacion")
         }

@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fj.ui.screens.HomeScreen
 import com.example.fj.ui.screens.MenuScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fj.ui.screens.SegundoPlanoScreen
 import com.example.fj.ui.screens.ComponentsScreen
 import com.example.fj.ui.screens.ContactCalendarScreen
 import com.example.fj.ui.screens.LocalizacionScreen
@@ -47,6 +48,7 @@ fun SetupNavGraph(navController: NavHostController){
         composable("home"){ HomeScreen(navController)}
         composable("components"){ ComponentsScreen(navController) }
         composable("login"){ LoginScreen(navController)}
+        composable("segundoplano") { SegundoPlanoScreen() }
         composable("localizacion") { LocalizacionScreen(viewModel()) }
         composable("contactcalendar") { ContactCalendarScreen() }
     }
