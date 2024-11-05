@@ -67,7 +67,7 @@ dependencies {
     //Mapas
     implementation("com.google.maps.android:maps-compose:2.14.0")
     implementation("com.google.android.gms:play-services-maps:19.0.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     //Places
     implementation("com.google.android.libraries.places:places:4.0.0")
     //Navigation
