@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.fj"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.fj"
@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.adaptive.android)
     implementation(libs.coil.compose)
     //implementation(libs.androidx.navigation.runtime.ktx)
+
     //Mapas
     implementation("com.google.maps.android:maps-compose:2.14.0")
     implementation("com.google.android.gms:play-services-maps:19.0.0")
@@ -72,6 +73,10 @@ dependencies {
     implementation("com.google.android.libraries.places:places:4.0.0")
     //Navigation
     implementation(libs.androidx.navigation.compose)
+    // WorkManager para tareas en segundo plano
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+    implementation(libs.androidx.storage)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
