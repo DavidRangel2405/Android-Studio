@@ -1,5 +1,8 @@
 package com.example.fj
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -7,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,6 +24,7 @@ import com.example.fj.ui.screens.ComponentsScreen
 import com.example.fj.ui.screens.ContactCalendarScreen
 import com.example.fj.ui.screens.LocalizacionScreen
 import com.example.fj.ui.screens.LoginScreen
+import com.example.fj.ui.screens.WifiDatosScreen
 
 //import androidx.navigation.compose.NavHostController
 
@@ -51,5 +56,11 @@ fun SetupNavGraph(navController: NavHostController){
         composable("segundoplano") { SegundoPlanoScreen() }
         composable("localizacion") { LocalizacionScreen(viewModel()) }
         composable("contactcalendar") { ContactCalendarScreen() }
+        composable("wifidatos") { WifiDatosScreen(
+            wifiManager = LocalContext.current.getSystemService(
+            Context.WIFI_SERVICE) as WifiManager,
+            connectivityManager = LocalContext.current.getSystemService(Context.CONNECTIVITY_SERVICE)
+                    as ConnectivityManager,
+            context = LocalContext.current as ComponentActivity) }
     }
 }
