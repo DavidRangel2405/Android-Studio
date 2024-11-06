@@ -45,7 +45,7 @@ fun WifiDatosScreen(
             if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
             ) {
-                // Permiso de ubicación concedido
+                Toast.makeText(context, "Permisos necesarios concedidos", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "Permisos necesarios no concedidos", Toast.LENGTH_SHORT).show()
             }
