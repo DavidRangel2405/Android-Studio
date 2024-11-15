@@ -1,4 +1,4 @@
-package com.example.fj.navigation
+package com.example.fj.APIs.model.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -6,9 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.fj.viewModel.SearchViewModel
-import com.example.fj.views.HomeView
-import com.example.fj.views.MapsSearchView
+import com.example.fj.APIs.model.viewModel.SearchViewModel
+import com.example.fj.APIs.model.views.HomeView
+import com.example.fj.APIs.model.views.MapsSearchView
 
 @Composable
 fun NavManager(searchVM: SearchViewModel) {

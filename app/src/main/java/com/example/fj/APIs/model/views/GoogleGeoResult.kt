@@ -1,4 +1,4 @@
-package com.example.fj.model
+package com.example.fj.APIs.model.views
 
 data class GoogleGeoResult(
     val results: List<Results>

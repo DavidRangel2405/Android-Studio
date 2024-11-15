@@ -40,6 +40,9 @@ fun MenuScreen(navController: NavController){
         Button(onClick = {navController.navigate("biometrics")}) {
             Text("Go to Biometrics")
         }
+        Button(onClick = {navController.navigate("camerafiles")}) {
+            Text("Go to CameraFiles")
+        }
         Button(onClick = {navController.navigate("wifidatos")}) {
             Text("Go to Wifi-Datos")
         }
