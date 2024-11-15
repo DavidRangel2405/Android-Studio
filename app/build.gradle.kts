@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.fj"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.fj"
@@ -62,7 +62,27 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.adaptive.android)
+    implementation(libs.coil.compose)
     //implementation(libs.androidx.navigation.runtime.ktx)
+
+    //WorkManager para tareas en segundo plano
+    implementation (libs.androidx.work.runtime.ktx)
+    //Mapas
+    implementation (libs.maps.compose)
+    implementation (libs.play.services.maps)
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+    //Places
+    implementation(libs.places)
+    //Biometrics
+    implementation(libs.androidx.biometric)
+    implementation(libs.androidx.asynclayoutinflater.appcompat.v110alpha01)
+    //Wifi and mobile data
+    implementation (libs.ui)
+    implementation (libs.material3)
+    implementation (libs.ui.tooling.preview)
+    implementation(libs.androidx.appcompat)
+    debugImplementation (libs.ui.tooling)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
