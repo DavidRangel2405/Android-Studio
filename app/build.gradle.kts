@@ -70,14 +70,13 @@ dependencies {
     //Mapas
     implementation (libs.maps.compose)
     implementation (libs.play.services.maps)
-
     implementation (libs.androidx.lifecycle.viewmodel.compose)
     //Places
     implementation(libs.places)
     //Biometrics
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.asynclayoutinflater.appcompat.v110alpha01)
-    //Wifi y datos moviles
+    //Wifi and mobile data
     implementation (libs.ui)
     implementation (libs.material3)
     implementation (libs.ui.tooling.preview)

@@ -7,10 +7,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.fragment.app.FragmentActivity
@@ -22,6 +20,7 @@ import com.example.fj.ui.screens.HomeScreen
 import com.example.fj.ui.screens.MenuScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fj.ui.screens.BiometricsScreen
+import com.example.fj.ui.screens.CameraScreen
 import com.example.fj.ui.screens.SegundoPlanoScreen
 import com.example.fj.ui.screens.ComponentsScreen
 import com.example.fj.ui.screens.ContactCalendarScreen
@@ -62,6 +61,7 @@ fun SetupNavGraph(navController: NavHostController) {
         composable("localizacion") { LocalizacionScreen(viewModel()) }
         composable("contactcalendar") { ContactCalendarScreen() }
         composable("biometrics") { BiometricsScreen() }
+        composable("camerafiles") { CameraScreen() }
         composable("wifidatos") {
             WifiDatosScreen(
                 wifiManager = LocalContext.current.getSystemService(Context.WIFI_SERVICE) as WifiManager,

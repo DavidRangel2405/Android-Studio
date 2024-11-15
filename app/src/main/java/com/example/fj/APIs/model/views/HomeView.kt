@@ -1,4 +1,4 @@
-package com.example.fj.views
+package com.example.fj.APIs.model.views
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.fj.viewModel.SearchViewModel
+import com.example.fj.APIs.model.viewModel.SearchViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

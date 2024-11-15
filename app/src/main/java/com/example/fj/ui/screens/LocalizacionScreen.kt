@@ -5,9 +5,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.fj.navigation.NavManager
+import com.example.fj.APIs.model.navigation.NavManager
 import com.example.fj.ui.theme.FJTheme
-import com.example.fj.viewModel.SearchViewModel
+import com.example.fj.APIs.model.viewModel.SearchViewModel
 
 @Composable
 fun LocalizacionScreen(viewModel: SearchViewModel) {

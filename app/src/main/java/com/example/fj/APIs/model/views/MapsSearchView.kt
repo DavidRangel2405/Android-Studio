@@ -1,4 +1,4 @@
-package com.example.fj.views
+package com.example.fj.APIs.model.views
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
