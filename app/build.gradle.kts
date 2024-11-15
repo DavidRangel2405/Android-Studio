@@ -66,20 +66,22 @@ dependencies {
     //implementation(libs.androidx.navigation.runtime.ktx)
 
     //WorkManager para tareas en segundo plano
-    implementation("androidx.work:work-runtime-ktx:2.10.0")
-    implementation(libs.androidx.storage)
+    implementation (libs.androidx.work.runtime.ktx)
     //Mapas
-    implementation("com.google.maps.android:maps-compose:2.14.0")
-    implementation("com.google.android.gms:play-services-maps:19.0.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation (libs.maps.compose)
+    implementation (libs.play.services.maps)
+
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
     //Places
-    implementation("com.google.android.libraries.places:places:4.0.0")
-    //Navigation
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.places)
+    //Biometrics
+    implementation(libs.androidx.biometric)
+    implementation(libs.androidx.asynclayoutinflater.appcompat.v110alpha01)
     //Wifi y datos moviles
     implementation (libs.ui)
-    implementation (libs.androidx.material)
+    implementation (libs.material3)
     implementation (libs.ui.tooling.preview)
+    implementation(libs.androidx.appcompat)
     debugImplementation (libs.ui.tooling)
 
     testImplementation(libs.junit)

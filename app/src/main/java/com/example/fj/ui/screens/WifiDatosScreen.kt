@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import coil.compose.rememberImagePainter
+import com.example.apiproyect.network.ConnectionCard
+import com.example.apiproyect.network.NetworkImage
 import kotlinx.coroutines.delay
 
 @Composable
@@ -33,10 +35,9 @@ fun WifiDatosScreen(
     context: ComponentActivity
 ) {
     var connectionStatus by remember { mutableStateOf("Sin conexión a Internet") }
-    var mobileDataUsage by remember { mutableStateOf(0L) }
-    var wifiDataUsage by remember { mutableStateOf(0L) }
-    var networkSpeed by remember { mutableStateOf(0) }
-    val dataUsageLimit = 500 // Límite de datos en MB
+    var mobileDataUsage by remember { mutableLongStateOf(0L) }
+    var wifiDataUsage by remember { mutableLongStateOf(0L) }
+    var networkSpeed by remember { mutableIntStateOf(0) }
     var isHighQualityImage by remember { mutableStateOf(false) }
 
     // Solicitar permisos de ubicación si es necesario
@@ -67,6 +68,7 @@ fun WifiDatosScreen(
         var lastWifiBytes = TrafficStats.getTotalRxBytes() - lastMobileBytes // Bytes en WiFi
 
         while (true) {
+            // Actualizamos el estado de la conexión
             connectionStatus = getConnectionStatus(wifiManager, connectivityManager, context)
             val isMobileConnected = checkIfMobileDataActive(connectivityManager)
             isHighQualityImage = !isMobileConnected // Alta calidad si no está en datos móviles
@@ -82,13 +84,6 @@ fun WifiDatosScreen(
                 mobileDataUsage += mobileDataUsed
                 lastMobileBytes = currentMobileBytes
 
-                if ((mobileDataUsage / (1024 * 1024)) >= dataUsageLimit) {
-                    Toast.makeText(
-                        context,
-                        "¡Has alcanzado el límite de datos móviles: $dataUsageLimit MB!",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
             } else if (!isMobileConnected && wifiDataUsed > 0) {
                 networkSpeed = ((wifiDataUsed * 8) / 1024).toInt() // Velocidad en kbps
                 wifiDataUsage += wifiDataUsed
@@ -97,18 +92,11 @@ fun WifiDatosScreen(
                 networkSpeed = 0
             }
 
-            Log.d("NetworkMonitoring", "Estado de la conexión: $connectionStatus")
-            Log.d("NetworkMonitoring", "Consumo de datos móviles: ${mobileDataUsage / (1024 * 1024)} MB")
-            Log.d("NetworkMonitoring", "Consumo de datos WiFi: ${wifiDataUsage / (1024 * 1024)} MB")
-            Log.d("NetworkMonitoring", "Velocidad de red: $networkSpeed kbps")
-
-            // Composición en tiempo real
-            connectionStatus = getConnectionStatus(wifiManager, connectivityManager, context)
-
             delay(500L) // Actualización cada medio segundo
         }
     }
 
+    // Diseño de la pantalla de monitoreo de la red
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -128,63 +116,12 @@ fun WifiDatosScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Mostramos tarjetas con información sobre el estado de la conexión, uso de datos móviles y WiFi
         ConnectionCard("Estado de la Conexión", connectionStatus, networkSpeed)
         Spacer(modifier = Modifier.height(16.dp))
-        ConnectionCard(
-            "Consumo Actual de Datos Móviles",
-            "${mobileDataUsage / (1024 * 1024)} MB de $dataUsageLimit MB"
-        )
+        ConnectionCard("Consumo de Datos Móviles", "${mobileDataUsage / (1024 * 1024)} MB")
         Spacer(modifier = Modifier.height(16.dp))
-        ConnectionCard(
-            "Consumo Actual de Datos WiFi",
-            "${wifiDataUsage / (1024 * 1024)} MB"
-        )
-    }
-}
-
-@Composable
-fun NetworkImage(isHighQuality: Boolean) {
-    val imageUrl = if (isHighQuality) {
-        "https://st4.depositphotos.com/5906210/40964/i/450/depositphotos_409642058-stock-photo-smoky-sunset-santa-cruz-mountains.jpg"
-    } else {
-        "https://mott.pe/noticias/wp-content/uploads/2018/06/otro-de-los-errores-en-las-fotos-de-paisajes-es-enfocar-siempre-el-infinito-de-la-escena.png"
-    }
-
-    Image(
-        painter = rememberImagePainter(data = imageUrl),
-        contentDescription = "Imagen de Red",
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-    )
-}
-
-@Composable
-fun ConnectionCard(title: String, content: String, networkSpeed: Int? = null) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = title,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Text(text = content, fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurface)
-            networkSpeed?.let {
-                Text(
-                    text = "Velocidad de Red: $it kbps",
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-            }
-        }
+        ConnectionCard("Consumo de Datos WiFi", "${wifiDataUsage / (1024 * 1024)} MB")
     }
 }
 
