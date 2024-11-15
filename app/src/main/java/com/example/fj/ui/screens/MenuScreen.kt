@@ -29,13 +29,16 @@ fun MenuScreen(navController: NavController){
             Text("Go to Login")
         }
         Button(onClick = {navController.navigate("segundoplano")}) {
-            Text("Go to Alarma")
+            Text("Go to Alarm")
         }
         Button(onClick = {navController.navigate("localizacion")}) {
-            Text("Go to Localizacion")
+            Text("Go to Localization")
         }
         Button(onClick = {navController.navigate("contactcalendar")}) {
             Text("Go to ContactCalendar")
+        }
+        Button(onClick = {navController.navigate("biometrics")}) {
+            Text("Go to Biometrics")
         }
         Button(onClick = {navController.navigate("wifidatos")}) {
             Text("Go to Wifi-Datos")
