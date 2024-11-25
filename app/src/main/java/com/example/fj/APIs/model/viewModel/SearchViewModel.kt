@@ -1,4 +1,4 @@
-package com.example.fj.viewModel
+package com.example.fj.APIs.model.viewModel
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.fj.model.GoogleGeoResult
+import com.example.fj.APIs.model.views.GoogleGeoResult
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.fj.alarm.AlarmWorker
+import com.example.fj.APIs.model.alarm.AlarmWorker
 import java.util.*
 import java.util.concurrent.TimeUnit
 

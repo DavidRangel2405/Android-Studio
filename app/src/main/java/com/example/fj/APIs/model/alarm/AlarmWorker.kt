@@ -1,4 +1,4 @@
-package com.example.fj.alarm
+package com.example.fj.APIs.model.alarm
 
 import android.Manifest
 import android.app.NotificationChannel
