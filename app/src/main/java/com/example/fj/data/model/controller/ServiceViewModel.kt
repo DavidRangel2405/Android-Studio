@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class ServiceViewModel: ViewModel() {
-    val api = RetrofitClient.api
+    private val api = RetrofitClient.api
 
     fun getServices(onResult: (Response<List<ServiceModel>>) -> Unit){
         viewModelScope.launch {
@@ -49,10 +49,10 @@ class ServiceViewModel: ViewModel() {
                 val response = api.updateService(id, service)
                 onResult(response)
             }
-            } catch (exception:Exception){
-                print(exception)
-            }
+        } catch (exception:Exception){
+            print(exception)
         }
+    }
 
     fun deleteService(id: Int, onResult: (Response<ServiceModel>) -> Unit) {
         try {
