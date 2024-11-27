@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -25,14 +24,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavController
 import com.example.fj.R
+import com.example.fj.data.model.ServiceEntity
 import com.example.fj.data.model.ServiceModel
 import com.example.fj.data.model.controller.ServiceViewModel
+import com.example.fj.data.model.database.AppDatabase
+import com.example.fj.data.model.database.DatabaseProvider
 import com.example.fj.ui.components.ServiceCard
 import com.example.fj.ui.components.ServiceDetailCard
 import com.example.fj.ui.components.TopBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,11 +45,14 @@ fun HomeScreen(
     navController: NavController,
     viewModel: ServiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+    val db: AppDatabase = DatabaseProvider.getDatabase(LocalContext.current)
     var serviceDetail by remember { mutableStateOf<ServiceModel?>(null) }
-    var sheetState = rememberModalBottomSheetState(
+    val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = false
     )
     var showBottomSheet by remember { mutableStateOf(false) }
+    var services by remember { mutableStateOf<List<ServiceEntity>>(emptyList()) }
+    val serviceDao = db.serviceDao()
     Scaffold(
         topBar = { TopBar("Password Manager", navController, false) },
         bottomBar = {
@@ -66,17 +74,11 @@ fun HomeScreen(
         }
     ) { innerPadding ->
 
-        var services by remember { mutableStateOf<List<ServiceModel>>(emptyList()) }
-        if (services.isEmpty()) {
-            CircularProgressIndicator()
-        }
+        //Button
         LaunchedEffect(Unit) {
-            viewModel.getServices { response ->
-                if (response.isSuccessful) {
-                    services = response.body() ?: emptyList()
-                } else {
-                    println("failed to load posts")
-                }
+            services = withContext(Dispatchers.IO){
+                viewModel.getServices (db)
+                serviceDao.getAll()
             }
         }
 

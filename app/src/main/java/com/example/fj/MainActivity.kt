@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -33,8 +34,16 @@ import com.example.fj.ui.screens.WifiDatosScreen
 
 class MainActivity : FragmentActivity() {
 
+    lateinit var database: AppDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Create or load DB
+        try{
+            database = DatabaseProvider.getDatabase(this)
+            Log.d("DB", "Database loaded successfully")
+        } catch (exception:Exception){
+            Log.d("DB", "error: $exception")
+        }
         enableEdgeToEdge()
 
         setContent {
