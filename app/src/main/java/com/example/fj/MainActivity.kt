@@ -20,6 +20,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fj.ui.screens.HomeScreen
 import com.example.fj.ui.screens.MenuScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fj.data.model.database.AppDatabase
+import com.example.fj.data.model.database.DatabaseProvider
 import com.example.fj.ui.screens.BiometricsScreen
 import com.example.fj.ui.screens.CameraScreen
 import com.example.fj.ui.screens.SegundoPlanoScreen
