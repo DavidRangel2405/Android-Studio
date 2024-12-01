@@ -97,7 +97,7 @@ fun ServiceDetailCard(
             Text(
                 text = username,
                 fontSize = 18.sp,
-                color = Color.Gray,
+                color = Color.White,
                 fontWeight = FontWeight.Medium
             )
             IconButton(
@@ -125,7 +125,7 @@ fun ServiceDetailCard(
             Text(
                 text = "*",
                 fontSize = 18.sp,
-                color = Color.Gray,
+                color = Color.White,
                 fontWeight = FontWeight.Medium
             )
             IconButton(
@@ -153,7 +153,7 @@ fun ServiceDetailCard(
             Text(
                 text = description,
                 fontSize = 18.sp,
-                color = Color.Gray,
+                color = Color.White,
                 fontWeight = FontWeight.Medium
             )
 

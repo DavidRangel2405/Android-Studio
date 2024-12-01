@@ -65,7 +65,6 @@ dependencies {
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.adaptive.android)
     implementation(libs.coil.compose)
-    //implementation(libs.androidx.navigation.runtime.ktx)
 
     //WorkManager para tareas en segundo plano
     implementation (libs.androidx.work.runtime.ktx)

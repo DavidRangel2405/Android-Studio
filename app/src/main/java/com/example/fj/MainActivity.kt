@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,8 +19,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fj.ui.screens.HomeScreen
 import com.example.fj.ui.screens.MenuScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.fj.data.model.database.AppDatabase
-import com.example.fj.data.model.database.DatabaseProvider
 import com.example.fj.ui.screens.BiometricsScreen
 import com.example.fj.ui.screens.CameraScreen
 import com.example.fj.ui.screens.SegundoPlanoScreen
@@ -36,18 +33,9 @@ import com.example.fj.ui.screens.WifiDatosScreen
 
 class MainActivity : FragmentActivity() {
 
-    lateinit var database: AppDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Create or load DB
-        try{
-            database = DatabaseProvider.getDatabase(this)
-            Log.d("DB", "Database loaded successfully")
-        } catch (exception:Exception){
-            Log.d("DB", "error: $exception")
-        }
         enableEdgeToEdge()
-
         setContent {
             ComposeMultiScreenApp()
         }
@@ -67,7 +55,7 @@ fun SetupNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "menu") {
         composable("menu") { MenuScreen(navController) }
         composable("home") { HomeScreen(navController) }
-        composable("components") { ComponentsScreen(navController) }
+        composable("components") { ComponentsScreen() }
         composable("login") { LoginScreen(navController) }
         composable("segundoplano") { SegundoPlanoScreen() }
         composable("localizacion") { LocalizacionScreen(viewModel()) }

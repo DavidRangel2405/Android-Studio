@@ -1,8 +1,10 @@
 package com.example.fj.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -26,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fj.R
 import com.example.fj.data.model.ServiceEntity
@@ -46,7 +49,7 @@ fun HomeScreen(
     viewModel: ServiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     val db: AppDatabase = DatabaseProvider.getDatabase(LocalContext.current)
-    var serviceDetail by remember { mutableStateOf<ServiceModel?>(null) }
+    var serviceDetail by remember { mutableStateOf<ServiceEntity?>(null) }
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = false
     )
@@ -54,17 +57,18 @@ fun HomeScreen(
     var services by remember { mutableStateOf<List<ServiceEntity>>(emptyList()) }
     val serviceDao = db.serviceDao()
     Scaffold(
-        topBar = { TopBar("Password Manager", navController, false) },
+        topBar = { TopBar("Password Manager", navController, backButton = true) },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color.Black,
-                contentColor = Color.White
+                containerColor = Color(0xFF4F0417),
+                contentColor = Color.White,
+                modifier = Modifier.height(20.dp) // Ajusta este valor según tus necesidades
             ) {
             }
         },
         floatingActionButton = {
             FloatingActionButton(
-                containerColor = colorResource(R.color.purple_500),
+                containerColor = Color(0xFF4F0417),
                 contentColor = Color.Black,
                 onClick = {
                     navController.navigate("manage-service/0")
@@ -76,8 +80,8 @@ fun HomeScreen(
 
         //Button
         LaunchedEffect(Unit) {
-            services = withContext(Dispatchers.IO){
-                viewModel.getServices (db)
+            services = withContext(Dispatchers.IO) {
+                viewModel.getServices(db)
                 serviceDao.getAll()
             }
         }
@@ -91,26 +95,28 @@ fun HomeScreen(
             state = listState
         ) {
             items(services) { service ->
-                service.imageURL?.let {
-                    ServiceCard(
-                        service.id, service.name, service.username, it,
-                        onButtonClick = {
-                            viewModel.showService(service.id) { response ->
-                                if (response.isSuccessful) {
-                                    serviceDetail = response.body()
-                                }
+                ServiceCard(
+                    service.id,
+                    service.name,
+                    service.username,
+                    service.imageURL,
+                    onButtonClick = {
+                        viewModel.showService(db, service.id) { entity ->
+                            if (entity != null) {
+                                serviceDetail = entity
+                                showBottomSheet = true
+                            } else {
+                                Log.d("error", "No se encontró el servicio.")
                             }
-                            showBottomSheet = true
-                        },
-                        imageURL = service.imageURL // Se corrigió el uso de TODO()
-                    )
-                }
+                        }
+                    }
+                )
             }
         }
 
         if (showBottomSheet) {
             ModalBottomSheet(
-                containerColor = colorResource(id = R.color.teal_200),
+                containerColor = Color(0xFF4F0417),
                 contentColor = Color.White,
                 modifier = Modifier.fillMaxHeight(),
                 onDismissRequest = { showBottomSheet = false },

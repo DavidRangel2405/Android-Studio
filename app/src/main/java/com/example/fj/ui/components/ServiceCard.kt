@@ -21,7 +21,6 @@ fun ServiceCard(
     id:Int,
     name:String,
     username:String,
-    password:String,
     imageURL:String?,
     onButtonClick:()->Unit)
     {
@@ -41,7 +40,7 @@ fun ServiceCard(
                     .height(88.dp)
                     .padding(18.dp),
                 model = imageURL,
-                error = painterResource(R.drawable.descargar),
+                error = painterResource(R.drawable.mondongo),
                 contentDescription = "Service logo ",
                 contentScale = ContentScale.FillBounds
             )

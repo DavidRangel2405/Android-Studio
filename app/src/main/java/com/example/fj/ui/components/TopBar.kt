@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 fun TopBar(title:String, navController: NavController, backButton:Boolean){
     TopAppBar(
         colors = topAppBarColors(
-            containerColor = Color.Black,
+            containerColor = Color(0xFF4F0417),
             titleContentColor = Color.White,
         ),
         title = {
@@ -25,7 +25,11 @@ fun TopBar(title:String, navController: NavController, backButton:Boolean){
         },
         navigationIcon = {
             if (backButton) {
-                IconButton(onClick = { navController.navigateUp() }) {
+                IconButton(onClick = {
+                    if (!navController.popBackStack()) {
+                        navController.navigateUp() // Intenta navegar hacia atrás
+                    }
+                }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                         contentDescription = "Go to previous screen",
