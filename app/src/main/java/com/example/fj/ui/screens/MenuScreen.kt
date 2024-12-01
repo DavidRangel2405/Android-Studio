@@ -1,5 +1,6 @@
 package com.example.fj.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,25 +9,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 
 @Composable
 fun MenuScreen(navController: NavController){
     Column(
         modifier = Modifier
-            .fillMaxSize( ),
+            .fillMaxSize( )
+            .background(color = Color.Black),
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text(text = "This is the Menu Screen")
-        Button(onClick = {navController.navigate("home")}) {
-            Text("Go to Home")
+        Button(onClick = {navController.navigate("login")}) {
+            Text("Go to Login")
         }
         Button(onClick = {navController.navigate("components")}) {
             Text("Go to Components")
-        }
-        Button(onClick = {navController.navigate("login")}) {
-            Text("Go to Login")
         }
         Button(onClick = {navController.navigate("segundoplano")}) {
             Text("Go to Alarm")

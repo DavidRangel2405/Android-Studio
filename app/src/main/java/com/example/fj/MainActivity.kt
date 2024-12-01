@@ -26,6 +26,7 @@ import com.example.fj.ui.screens.ComponentsScreen
 import com.example.fj.ui.screens.ContactCalendarScreen
 import com.example.fj.ui.screens.LocalizacionScreen
 import com.example.fj.ui.screens.LoginScreen
+import com.example.fj.ui.screens.ManageServiceScreen
 import com.example.fj.ui.screens.WifiDatosScreen
 
 //import androidx.navigation.compose.NavHostController
@@ -35,7 +36,6 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
             ComposeMultiScreenApp()
         }
@@ -55,19 +55,22 @@ fun SetupNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "menu") {
         composable("menu") { MenuScreen(navController) }
         composable("home") { HomeScreen(navController) }
-        composable("components") { ComponentsScreen(navController) }
+        composable("components") { ComponentsScreen() }
         composable("login") { LoginScreen(navController) }
         composable("segundoplano") { SegundoPlanoScreen() }
         composable("localizacion") { LocalizacionScreen(viewModel()) }
         composable("contactcalendar") { ContactCalendarScreen() }
         composable("biometrics") { BiometricsScreen() }
         composable("camerafiles") { CameraScreen() }
-        composable("wifidatos") {
-            WifiDatosScreen(
-                wifiManager = LocalContext.current.getSystemService(Context.WIFI_SERVICE) as WifiManager,
-                connectivityManager = LocalContext.current.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-                context = LocalContext.current as ComponentActivity
-            )
+        composable("wifidatos") { WifiDatosScreen(
+            wifiManager = LocalContext.current.getSystemService(
+            Context.WIFI_SERVICE) as WifiManager,
+            connectivityManager = LocalContext.current.getSystemService(Context.CONNECTIVITY_SERVICE)
+                    as ConnectivityManager,
+            context = LocalContext.current as ComponentActivity) }
+        composable("manage-service/{serviceId}"){backStackEntry ->
+            val serviceId = backStackEntry.arguments?.getString("serviceId")
+            ManageServiceScreen(navController, serviceId = serviceId)
         }
     }
 }
