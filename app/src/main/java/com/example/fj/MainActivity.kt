@@ -36,7 +36,6 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         setContent {
             ComposeMultiScreenApp()
         }
@@ -56,7 +55,7 @@ fun SetupNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "menu") {
         composable("menu") { MenuScreen(navController) }
         composable("home") { HomeScreen(navController) }
-        composable("components") { ComponentsScreen(navController) }
+        composable("components") { ComponentsScreen() }
         composable("login") { LoginScreen(navController) }
         composable("segundoplano") { SegundoPlanoScreen() }
         composable("localizacion") { LocalizacionScreen(viewModel()) }

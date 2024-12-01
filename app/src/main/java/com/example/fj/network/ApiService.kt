@@ -1,5 +1,7 @@
 package com.example.fj.network
 
+import com.example.fj.data.model.LoginRequest
+import com.example.fj.data.model.LoginResponse
 import com.example.fj.data.model.ServiceModel
 import retrofit2.Response
 import retrofit2.http.Body
@@ -20,8 +22,12 @@ interface ApiService {
     suspend fun createService(@Body service: ServiceModel): Response<ServiceModel>
 
     @PUT("service/{id}")
-    suspend fun updateService(@Path("id")id: Int, @Body service: ServiceModel): Response<ServiceModel>
-
+    suspend fun updateService(@Path("id") id: Int, @Body service: ServiceModel): Response<ServiceModel>
+    @GET("service/{id}")
+    suspend fun getServiceById(@Path("id") serviceId: Int): Response<ServiceModel>
     @DELETE("service/{id}")
-    suspend fun deleteService(@Path("id")id: Int): Response<ServiceModel>
+    suspend fun deleteService(@Path("id") id: Int): Response<ServiceModel>
+
+    @POST("user")
+    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 }

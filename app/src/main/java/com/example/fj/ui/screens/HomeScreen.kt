@@ -1,8 +1,10 @@
 package com.example.fj.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,7 +12,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -25,14 +26,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fj.R
+import com.example.fj.data.model.ServiceEntity
 import com.example.fj.data.model.ServiceModel
 import com.example.fj.data.model.controller.ServiceViewModel
+import com.example.fj.data.model.database.AppDatabase
+import com.example.fj.data.model.database.DatabaseProvider
 import com.example.fj.ui.components.ServiceCard
 import com.example.fj.ui.components.ServiceDetailCard
 import com.example.fj.ui.components.TopBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,23 +48,27 @@ fun HomeScreen(
     navController: NavController,
     viewModel: ServiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    var serviceDetail by remember { mutableStateOf<ServiceModel?>(null) }
-    var sheetState = rememberModalBottomSheetState(
+    val db: AppDatabase = DatabaseProvider.getDatabase(LocalContext.current)
+    var serviceDetail by remember { mutableStateOf<ServiceEntity?>(null) }
+    val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = false
     )
     var showBottomSheet by remember { mutableStateOf(false) }
+    var services by remember { mutableStateOf<List<ServiceEntity>>(emptyList()) }
+    val serviceDao = db.serviceDao()
     Scaffold(
-        topBar = { TopBar("Password Manager", navController, false) },
+        topBar = { TopBar("Password Manager", navController, backButton = true) },
         bottomBar = {
             BottomAppBar(
-                containerColor = Color.Black,
-                contentColor = Color.White
+                containerColor = Color(0xFF4F0417),
+                contentColor = Color.White,
+                modifier = Modifier.height(20.dp) // Ajusta este valor según tus necesidades
             ) {
             }
         },
         floatingActionButton = {
             FloatingActionButton(
-                containerColor = colorResource(R.color.purple_500),
+                containerColor = Color(0xFF4F0417),
                 contentColor = Color.Black,
                 onClick = {
                     navController.navigate("manage-service/0")
@@ -66,17 +78,11 @@ fun HomeScreen(
         }
     ) { innerPadding ->
 
-        var services by remember { mutableStateOf<List<ServiceModel>>(emptyList()) }
-        if (services.isEmpty()) {
-            CircularProgressIndicator()
-        }
+        //Button
         LaunchedEffect(Unit) {
-            viewModel.getServices { response ->
-                if (response.isSuccessful) {
-                    services = response.body() ?: emptyList()
-                } else {
-                    println("failed to load posts")
-                }
+            services = withContext(Dispatchers.IO) {
+                viewModel.getServices(db)
+                serviceDao.getAll()
             }
         }
 
@@ -89,26 +95,28 @@ fun HomeScreen(
             state = listState
         ) {
             items(services) { service ->
-                service.imageURL?.let {
-                    ServiceCard(
-                        service.id, service.name, service.username, it,
-                        onButtonClick = {
-                            viewModel.showService(service.id) { response ->
-                                if (response.isSuccessful) {
-                                    serviceDetail = response.body()
-                                }
+                ServiceCard(
+                    service.id,
+                    service.name,
+                    service.username,
+                    service.imageURL,
+                    onButtonClick = {
+                        viewModel.showService(db, service.id) { entity ->
+                            if (entity != null) {
+                                serviceDetail = entity
+                                showBottomSheet = true
+                            } else {
+                                Log.d("error", "No se encontró el servicio.")
                             }
-                            showBottomSheet = true
-                        },
-                        imageURL = service.imageURL // Se corrigió el uso de TODO()
-                    )
-                }
+                        }
+                    }
+                )
             }
         }
 
         if (showBottomSheet) {
             ModalBottomSheet(
-                containerColor = colorResource(id = R.color.teal_200),
+                containerColor = Color(0xFF4F0417),
                 contentColor = Color.White,
                 modifier = Modifier.fillMaxHeight(),
                 onDismissRequest = { showBottomSheet = false },

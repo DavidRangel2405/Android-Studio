@@ -1,7 +1,9 @@
 package com.example.fj.ui.screens
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
+import androidx.annotation.OptIn
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -29,9 +31,18 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fj.R
+import com.example.fj.data.model.ServiceEntity
 import com.example.fj.data.model.controller.ServiceViewModel
 import com.example.fj.data.model.ServiceModel
+import com.example.fj.data.model.dao.ServiceDao
+import com.example.fj.data.model.database.AppDatabase
+import com.example.fj.data.model.database.DatabaseProvider
+import com.example.fj.data.model.toServiceEntity
 import com.example.fj.ui.components.TopBar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun ManageServiceScreen(
@@ -39,18 +50,22 @@ fun ManageServiceScreen(
     serviceId: String?,
     viewModel: ServiceViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ){
-    val service = remember {mutableStateOf(ServiceModel())}
+    //
+    val db: AppDatabase = DatabaseProvider.getDatabase(LocalContext.current)
+    val serviceDao = db.serviceDao()
     val context = LocalContext.current
+    //
+    val service = remember {mutableStateOf(ServiceModel())}
     var bar_title by remember {mutableStateOf("Create new service")}
 
     if(serviceId != null && serviceId != "0"){
         bar_title = "Update service"
-        viewModel.showService(serviceId.toInt()){ response ->
-            if(response.isSuccessful){
-                service.value.name = response.body()?.name.toString()
-                service.value.username = response.body()?.username.toString()
-                service.value.password = response.body()?.password.toString()
-                service.value.description = response.body()?.description.toString()
+        viewModel.showService(db, serviceId.toInt()){ entity ->
+            if(entity != null){
+                service.value.name = entity.name
+                service.value.username = entity.username
+                service.value.password = entity.password
+                service.value.description = entity.description
             } else {
                 Toast.makeText(
                     context,
@@ -80,7 +95,7 @@ fun ManageServiceScreen(
                 label = { Text("Service name") },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.White,
-                    focusedBorderColor = colorResource(R.color.purple_500),
+                    focusedBorderColor = Color(0xFF4F0417),
                     unfocusedContainerColor = Color.Transparent,
                     focusedContainerColor = colorResource(R.color.black),
                     unfocusedTextColor = Color.White,
@@ -91,7 +106,7 @@ fun ManageServiceScreen(
                 ),
             )
 
-// Campo: Nombre de usuario
+            //Nombre de usuario
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = service.value.username,
@@ -100,7 +115,7 @@ fun ManageServiceScreen(
                 label = { Text("Username") },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.White,
-                    focusedBorderColor = colorResource(R.color.purple_500),
+                    focusedBorderColor = Color(0xFF4F0417),
                     unfocusedContainerColor = Color.Transparent,
                     focusedContainerColor = colorResource(R.color.black),
                     unfocusedTextColor = Color.White,
@@ -111,7 +126,7 @@ fun ManageServiceScreen(
                 ),
             )
 
-// Campo: Contraseña
+            //Contraseña
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = service.value.password,
@@ -120,7 +135,7 @@ fun ManageServiceScreen(
                 label = { Text("Password") },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.White,
-                    focusedBorderColor = colorResource(R.color.purple_500),
+                    focusedBorderColor = Color(0xFF4F0417),
                     unfocusedContainerColor = Color.Transparent,
                     focusedContainerColor = colorResource(R.color.black),
                     unfocusedTextColor = Color.White,
@@ -140,7 +155,7 @@ fun ManageServiceScreen(
                 label = { Text("Description") },
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = Color.White,
-                    focusedBorderColor = colorResource(R.color.purple_500),
+                    focusedBorderColor = Color(0xFF4F0417),
                     unfocusedContainerColor = Color.Transparent,
                     focusedContainerColor = colorResource(R.color.black),
                     unfocusedTextColor = Color.White,
@@ -152,8 +167,8 @@ fun ManageServiceScreen(
             )
             FilledTonalButton(
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(R.color.purple_500),
-                    contentColor = Color.Black,
+                    containerColor = Color(0xFF4F0417),
+                    contentColor = Color.White,
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -174,7 +189,7 @@ fun ManageServiceScreen(
                 OutlinedButton(
                     border = BorderStroke(
                         width = 3.dp,
-                        color = colorResource(R.color.purple_500)
+                        color = Color(0xFF4F0417)
                     ),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
@@ -185,7 +200,7 @@ fun ManageServiceScreen(
                         .padding(0.dp, 10.dp),
                     shape = CutCornerShape(4.dp),
                     onClick = {
-                        delete(viewModel, context, serviceId, navController)
+                        delete(viewModel, context, serviceId, navController, serviceDao)
                     }
                 ) {
                     Text("DELETE")
@@ -201,36 +216,82 @@ fun save(
     service: ServiceModel,
     serviceId: String?
 ) {
+    val db: AppDatabase = DatabaseProvider.getDatabase(context)
+    val serviceDao = db.serviceDao()
+
     if (serviceId == "0") {
-        viewModel.createService(service) { response ->
-            if (response.isSuccessful) {
-                Toast.makeText(
-                    context,
-                    "Service created successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    context,
-                    "Error: $${response.body()}",
-                    Toast.LENGTH_SHORT
-                ).show()
+        // Generar un ID único basado en el siguiente número disponible
+        CoroutineScope(Dispatchers.IO).launch {
+            var newId: Int
+            do {
+                // Obtener el ID máximo actual de la base de datos
+                newId = serviceDao.getMaxId() + 1 // Incrementamos 1 al ID máximo
+
+                // Verificamos si el nuevo ID ya existe en la base de datos
+            } while (serviceDao.show(newId) != null)  // Si ya existe, seguimos buscando
+
+            // Crear un nuevo servicio con el ID generado
+            val serviceEntity = service.copy(id = newId).toServiceEntity()
+
+            // Insertar el servicio con el nuevo ID en la base de datos local
+            serviceDao.insert(serviceEntity)
+            Log.d("Database", "Service inserted with new ID: ${serviceEntity.id}")
+
+            // Subir el servicio de forma remota
+            viewModel.createService(service.copy(id = newId)) { response ->
+                if (response.isSuccessful) {
+                    val createdService = response.body()
+                    if (createdService != null) {
+                        Log.d("API", "Service successfully created remotely: ${createdService.id}")
+                        Toast.makeText(context, "Service created successfully", Toast.LENGTH_SHORT).show()
+
+                        // Ahora verificamos si el servicio se guardó correctamente en el servidor
+                        viewModel.getServiceById(createdService.id) { getResponse ->
+                            if (getResponse.isSuccessful) {
+                                // Verificar que el servicio existe en la base de datos remota
+                                Log.d("API", "Service confirmed to be in remote DB: ${getResponse.body()?.id}")
+                            } else {
+                                Log.e("API", "Failed to fetch service from remote DB: ${getResponse.message()}")
+                            }
+                        }
+                    } else {
+                        Log.e("API", "The service creation response body is null.")
+                        Toast.makeText(context, "Error: Invalid response from server", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Log.e("API", "Failed to create service remotely: ${response.message()}")
+                    Toast.makeText(context, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
-    } else if (serviceId != null) {
-        viewModel.updateService(serviceId.toInt(), service) { response ->
-            if (response.isSuccessful) {
-                Toast.makeText(
-                    context,
-                    "Service updated successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    context,
-                    "Error: $${response.body()}",
-                    Toast.LENGTH_SHORT
-                ).show()
+    } else {
+        // Actualizar un servicio existente
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val updatedEntity = ServiceEntity(
+                    id = serviceId!!.toInt(),
+                    name = service.name,
+                    username = service.username,
+                    password = service.password,
+                    description = service.description,
+                    imageURL = service.imageURL,
+                )
+                serviceDao.update(updatedEntity) // Actualizar en la BD local
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        context,
+                        "Service updated successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (exception: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        context,
+                        "Failed to update service: ${exception.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
@@ -240,23 +301,30 @@ fun delete(
     viewModel: ServiceViewModel,
     context: Context,
     serviceId: String?,
-    navController: NavController
+    navController: NavController,
+    serviceDao: ServiceDao
 ) {
     if (serviceId != null && serviceId != "0") {
-        viewModel.deleteService(serviceId.toInt()) { response ->
-            if (response.isSuccessful) {
-                Toast.makeText(
-                    context,
-                    "Service deleted successfully",
-                    Toast.LENGTH_SHORT
-                ).show()
-                navController.popBackStack()
+        CoroutineScope(Dispatchers.IO).launch {
+            val service = serviceDao.show(serviceId.toInt())
+            if (service != null) {
+                serviceDao.delete(service)
+                CoroutineScope(Dispatchers.Main).launch {
+                    Toast.makeText(
+                        context,
+                        "Service deleted successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    navController.popBackStack()
+                }
             } else {
-                Toast.makeText(
-                    context,
-                    "Failed to delete service",
-                    Toast.LENGTH_SHORT
-                ).show()
+                CoroutineScope(Dispatchers.Main).launch {
+                    Toast.makeText(
+                        context,
+                        "Failed to delete service: Service not found",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
